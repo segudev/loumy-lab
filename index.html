@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LOUMY LAB — Design Studio & Atelier</title>
+<meta name="description" content="Luminaires artisanaux en frêne olivier. Pièces numérotées, fabriquées en Moselle.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Azeret+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap" rel="stylesheet">
+
+<style>
+@font-face {
+  font-family: '20db';
+  font-display: swap;
+  src: url('fonts/20db.woff2') format('woff2'),
+       url('fonts/20db.woff') format('woff');
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:        #f4f4f2;
+  --bg-alt:    #eaeae8;
+  --canvas-bg: #e6e6e3;
+  --border:    #1a1a1a;
+  --text:      #1a1a1a;
+  --dim:       #999;
+  --accent:    #c45a2d;
+  --mono:      'Azeret Mono', monospace;
+  --logo:      '20db', serif;
+  --header-h:  6.2rem;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 14px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ═══════════════════════════════════════════
+   HEADER
+   ═══════════════════════════════════════════ */
+header {
+  position: fixed; inset: 0 0 auto;
+  z-index: 100;
+  background: transparent;
+  transition: background .4s ease, box-shadow .4s ease;
+}
+header.scrolled {
+  background: var(--bg);
+  box-shadow: 0 1px 0 var(--border);
+}
+
+/* hide entire header while over hero, reveal on scroll */
+header:not(.scrolled) {
+  opacity: 0;
+  pointer-events: none;
+}
+header.scrolled {
+  opacity: 1;
+  pointer-events: auto;
+}
+header {
+  transition: background .4s ease, box-shadow .4s ease, opacity .35s ease;
+}
+
+.header-top {
+  display: flex; align-items: center; justify-content: center;
+  padding: 1.4rem 2rem .8rem;
+}
+
+.logo {
+  font-family: var(--logo);
+  font-size: 1.8rem; font-weight: 400; letter-spacing: 0em;
+  color: var(--text); text-decoration: none;
+  display: flex; flex-direction: column; align-items: center; gap: .25rem;
+  text-transform: uppercase;
+  transition: opacity .2s;
+  line-height: 1;
+}
+.logo:hover { opacity: .7; }
+.logo span {
+  font-family: var(--mono);
+  font-weight: 300; font-size: .55rem; letter-spacing: .18em;
+  color: var(--dim);
+}
+
+nav.tabs {
+  display: flex;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+nav.tabs a {
+  flex: 1; text-align: center;
+  font-family: var(--mono); font-size: .65rem; font-weight: 400;
+  letter-spacing: .08em; text-decoration: none; color: var(--dim);
+  padding: .6rem .5rem;
+  transition: color .25s;
+  border-right: 1px solid var(--bg-alt);
+  text-transform: uppercase;
+  position: relative;
+}
+nav.tabs a:last-child { border-right: none; }
+nav.tabs a:hover { color: var(--text); }
+nav.tabs a.active { color: var(--text); font-weight: 500; }
+nav.tabs a.active::after {
+  content: ''; position: absolute; bottom: -1px; left: 0; right: 0;
+  height: 2px; background: var(--accent);
+}
+
+/* ═══════════════════════════════════════════
+   SECTION UTILITIES
+   ═══════════════════════════════════════════ */
+.section-rule {
+  display: flex; align-items: center; gap: 1.2rem;
+  padding: 3.5rem 2.5rem 2.5rem;
+}
+.section-rule h2 {
+  font-size: .65rem; font-weight: 500;
+  letter-spacing: .1em; color: var(--text);
+  text-transform: uppercase; white-space: nowrap;
+}
+.section-rule .rule {
+  flex: 1; height: 1px; background: var(--border);
+}
+.section-rule .rule-num {
+  font-size: .55rem; font-weight: 300;
+  letter-spacing: .06em; color: var(--dim);
+}
+
+/* ═══════════════════════════════════════════
+   HERO / ACCUEIL
+   ═══════════════════════════════════════════ */
+#accueil {
+  min-height: 100svh;
+  display: flex; align-items: center; justify-content: center;
+  padding: calc(var(--header-h) + 3rem) 2rem 4rem;
+  position: relative;
+  overflow: hidden;
+}
+
+/* video background */
+.hero-video {
+  position: absolute; inset: 0;
+  z-index: 0;
+}
+.hero-video video {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center;
+  display: block;
+}
+/* gradient overlay: dark at top (behind header), eases to semi-dark middle, fades at bottom */
+.hero-video::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(10,10,10,.55) 0%,
+    rgba(10,10,10,.38) 50%,
+    rgba(10,10,10,.55) 100%
+  );
+}
+
+/* bottom border still visible */
+#accueil::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; z-index: 2;
+  height: 1px; background: rgba(255,255,255,.2);
+}
+
+.hero-content {
+  text-align: center; max-width: 600px;
+  position: relative; z-index: 1;
+}
+
+.hero-eyebrow {
+  font-size: .6rem; font-weight: 300; letter-spacing: .16em;
+  color: rgba(255,255,255,.65); margin-bottom: 2.5rem;
+  text-transform: uppercase;
+}
+
+.hero-logo {
+  font-family: var(--logo);
+  font-size: clamp(3rem, 9vw, 6.5rem);
+  font-weight: 400; letter-spacing: 0em; line-height: 1;
+  margin-bottom: .8rem;
+  color: #fff;
+}
+
+.hero-sub {
+  font-size: .7rem; font-weight: 300; letter-spacing: .22em;
+  color: rgba(255,255,255,.65); text-transform: uppercase;
+  margin-bottom: 3.5rem;
+}
+
+.hero-tagline {
+  font-size: .78rem; font-weight: 300;
+  color: rgba(255,255,255,.55); max-width: 380px; margin: 0 auto 4rem;
+  line-height: 2;
+}
+
+.hero-scroll {
+  display: flex; flex-direction: column; align-items: center; gap: .5rem;
+}
+.hero-scroll span {
+  font-size: .55rem; letter-spacing: .12em; color: rgba(255,255,255,.5);
+  text-transform: uppercase;
+}
+.hero-scroll-line {
+  width: 1px; height: 40px; background: rgba(255,255,255,.4);
+  animation: pulse 2.8s ease infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: .2; }
+  50%      { opacity: .7; }
+}
+
+/* ═══════════════════════════════════════════
+   COLLECTION
+   ═══════════════════════════════════════════ */
+.collection-intro {
+  padding: 0 2.5rem 3rem;
+  max-width: 720px;
+}
+.collection-intro p {
+  font-size: .78rem; font-weight: 300; color: var(--dim);
+  line-height: 2; margin-bottom: 1.2rem;
+}
+
+.lamp-section {
+  display: grid; grid-template-columns: 1fr 1fr;
+  min-height: 80svh;
+  border-top: 1px solid var(--border);
+}
+.lamp-section:nth-child(odd) .lamp-3d  { order: -1; }
+.lamp-section:nth-child(even) .lamp-info { border-left: 1px solid var(--border); }
+.lamp-section:nth-child(odd)  .lamp-info { border-right: 1px solid var(--border); }
+
+.lamp-3d {
+  position: relative; background: var(--canvas-bg); overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+.lamp-3d canvas {
+  width: 100% !important; height: 100% !important; display: block;
+}
+
+.lamp-3d-badge {
+  position: absolute; top: 1.2rem; right: 1.2rem;
+  font-size: .55rem; letter-spacing: .06em; color: var(--dim);
+  background: rgba(244,244,242,.7); padding: .2rem .55rem;
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+}
+
+.lamp-3d-placeholder {
+  font-size: .6rem; letter-spacing: .1em; color: rgba(0,0,0,.12);
+  text-transform: uppercase;
+  position: absolute;
+}
+
+.lamp-info {
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 4rem 3.5rem;
+}
+
+
+.lamp-name {
+  font-size: clamp(1.5rem, 2.8vw, 2.4rem);
+  font-weight: 700; letter-spacing: .06em;
+  line-height: 1; margin-bottom: 1.8rem;
+}
+
+.lamp-desc {
+  font-size: .76rem; font-weight: 300; color: var(--dim);
+  max-width: 340px; line-height: 2; margin-bottom: 2.2rem;
+}
+
+.lamp-spec { display: flex; gap: 2.5rem; flex-wrap: wrap; }
+.lamp-spec dt {
+  font-size: .55rem; font-weight: 500;
+  letter-spacing: .06em; color: var(--dim);
+  text-transform: uppercase; margin-bottom: .15rem;
+}
+.lamp-spec dd { font-size: .76rem; color: var(--text); font-weight: 400; }
+
+.lamp-cta {
+  display: inline-flex; align-items: center; gap: .5rem;
+  margin-top: 2.8rem; font-size: .6rem; font-weight: 500;
+  letter-spacing: .06em; color: var(--text); text-decoration: none;
+  padding: .55rem 0; border-bottom: 1px solid var(--border);
+  width: max-content; transition: color .25s, border-color .25s;
+  text-transform: uppercase;
+}
+.lamp-cta::after { content: '\2192'; transition: transform .25s; }
+.lamp-cta:hover { color: var(--accent); border-color: var(--accent); }
+.lamp-cta:hover::after { transform: translateX(4px); }
+
+/* ═══════════════════════════════════════════
+   À PROPOS
+   ═══════════════════════════════════════════ */
+.about-content {
+  display: grid; grid-template-columns: 1fr 1fr;
+  border-top: 1px solid var(--border);
+}
+
+.about-left {
+  padding: 4rem 3rem;
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; justify-content: center;
+}
+.about-left .about-label {
+  font-size: .55rem; font-weight: 500; letter-spacing: .12em;
+  color: var(--accent); text-transform: uppercase;
+  margin-bottom: 1.5rem;
+}
+.about-left blockquote {
+  font-size: clamp(1rem, 2vw, 1.3rem);
+  font-weight: 300; line-height: 1.7;
+  font-style: italic;
+  color: var(--text);
+  max-width: 380px;
+  position: relative;
+  padding-top: 2.5rem;
+}
+.about-left blockquote::before {
+  content: '\201C';
+  font-family: Georgia, serif;
+  font-size: 6rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--accent);
+  opacity: .35;
+  position: absolute;
+  top: -.5rem; left: -.3rem;
+}
+.about-left blockquote::after {
+  content: '\201D';
+  font-family: Georgia, serif;
+  font-size: 6rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 0;
+  color: var(--accent);
+  opacity: .35;
+  display: inline-block;
+  vertical-align: -.55em;
+  margin-left: .1em;
+}
+
+.about-right {
+  padding: 4rem 3rem;
+  display: flex; flex-direction: column; justify-content: center; gap: 1.8rem;
+}
+.about-right p {
+  font-size: .76rem; font-weight: 300; color: var(--dim);
+  line-height: 2; max-width: 400px;
+}
+
+/* ═══════════════════════════════════════════
+   EXPOSITIONS
+   ═══════════════════════════════════════════ */
+.expo-list {
+  padding: 0 2.5rem 4rem;
+}
+.expo-item {
+  display: grid; grid-template-columns: 10rem 1fr;
+  gap: 2rem; padding: 1.8rem 0;
+  border-bottom: 1px solid var(--bg-alt);
+  align-items: baseline;
+}
+.expo-item:last-child { border-bottom: 1px solid var(--border); }
+
+.expo-date {
+  font-size: .6rem; font-weight: 500;
+  letter-spacing: .04em; color: var(--accent);
+  text-transform: uppercase;
+}
+.expo-detail h3 {
+  font-size: .8rem; font-weight: 600; letter-spacing: .04em;
+  margin-bottom: .3rem;
+}
+.expo-detail p {
+  font-size: .7rem; font-weight: 300; color: var(--dim);
+  line-height: 1.8;
+}
+.expo-badge {
+  display: inline-block;
+  font-size: .5rem; font-weight: 500; letter-spacing: .06em;
+  color: var(--accent); text-transform: uppercase;
+  border: 1px solid var(--accent); padding: .15rem .4rem;
+  margin-top: .4rem;
+}
+
+/* ═══════════════════════════════════════════
+   CONTACT
+   ═══════════════════════════════════════════ */
+.contact-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  min-height: 50svh;
+}
+
+.contact-info {
+  padding: 4rem 3rem;
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; justify-content: center; gap: 2.5rem;
+}
+.contact-info .info-block { }
+.contact-info .info-label {
+  font-size: .55rem; font-weight: 500; letter-spacing: .1em;
+  color: var(--dim); text-transform: uppercase;
+  margin-bottom: .5rem;
+}
+.contact-info p {
+  font-size: .76rem; font-weight: 300; color: var(--text); line-height: 2;
+}
+.contact-info a {
+  color: var(--text); text-decoration: none;
+  transition: color .2s;
+}
+.contact-info a:hover { color: var(--accent); }
+
+.contact-insta {
+  display: inline-flex; align-items: center; gap: .4rem;
+  font-size: .6rem; font-weight: 500; letter-spacing: .06em;
+  color: var(--text); text-decoration: none;
+  text-transform: uppercase; transition: color .2s;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: .3rem; width: max-content;
+}
+.contact-insta:hover { color: var(--accent); border-color: var(--accent); }
+
+.contact-form-wrap {
+  padding: 4rem 3rem;
+  display: flex; flex-direction: column; justify-content: center;
+}
+.contact-form-wrap .form-label {
+  font-size: .55rem; font-weight: 500; letter-spacing: .1em;
+  color: var(--dim); text-transform: uppercase;
+  margin-bottom: 2rem;
+}
+
+.contact-form { display: flex; flex-direction: column; gap: 1.5rem; max-width: 380px; }
+.contact-form label {
+  font-size: .55rem; font-weight: 500; letter-spacing: .08em;
+  color: var(--dim); text-transform: uppercase;
+  display: block; margin-bottom: .4rem;
+}
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  font-family: var(--mono); font-size: .76rem; font-weight: 300;
+  color: var(--text); background: transparent;
+  border: none; border-bottom: 1px solid var(--border);
+  padding: .6rem 0; outline: none;
+  transition: border-color .2s;
+}
+.contact-form input:focus,
+.contact-form textarea:focus {
+  border-color: var(--accent);
+}
+.contact-form input::placeholder,
+.contact-form textarea::placeholder {
+  color: var(--dim); opacity: .5;
+}
+.contact-form textarea { resize: vertical; min-height: 100px; }
+
+.contact-form button {
+  align-self: flex-start;
+  font-family: var(--mono); font-size: .6rem; font-weight: 500;
+  letter-spacing: .08em; text-transform: uppercase;
+  color: var(--bg); background: var(--text);
+  border: 1px solid var(--border);
+  padding: .7rem 2rem; cursor: pointer;
+  transition: background .25s, color .25s;
+}
+.contact-form button:hover {
+  background: var(--accent); border-color: var(--accent); color: #fff;
+}
+
+/* ═══════════════════════════════════════════
+   FOOTER
+   ═══════════════════════════════════════════ */
+footer {
+  border-top: 1px solid var(--border);
+  background: var(--bg);
+}
+.footer-main {
+  display: grid; grid-template-columns: 1fr auto 1fr;
+  padding: 3rem 2.5rem;
+  align-items: start; gap: 2rem;
+}
+
+.footer-nav { display: flex; flex-direction: column; gap: .5rem; }
+.footer-nav a {
+  font-size: .55rem; letter-spacing: .06em;
+  color: var(--dim); text-decoration: none;
+  text-transform: uppercase; transition: color .2s;
+}
+.footer-nav a:hover { color: var(--text); }
+
+.footer-contact { text-align: right; }
+.footer-contact p {
+  font-size: .7rem; color: var(--dim); font-weight: 300; line-height: 2.2;
+}
+.footer-contact a {
+  color: var(--dim); text-decoration: none; transition: color .2s;
+}
+.footer-contact a:hover { color: var(--accent); }
+
+.footer-bottom {
+  padding: 1.5rem 2.5rem;
+  border-top: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: .55rem; color: var(--dim); font-weight: 300;
+  letter-spacing: .04em;
+}
+
+/* ═══════════════════════════════════════════
+   SCROLL REVEAL
+   ═══════════════════════════════════════════ */
+.reveal {
+  opacity: 0; transform: translateY(14px);
+  transition: opacity .5s ease, transform .5s ease;
+}
+.reveal.visible { opacity: 1; transform: none; }
+
+/* Staggered children */
+.reveal-stagger > * {
+  opacity: 0; transform: translateY(10px);
+  transition: opacity .4s ease, transform .4s ease;
+}
+.reveal-stagger.visible > *:nth-child(1) { transition-delay: 0s; }
+.reveal-stagger.visible > *:nth-child(2) { transition-delay: .08s; }
+.reveal-stagger.visible > *:nth-child(3) { transition-delay: .16s; }
+.reveal-stagger.visible > *:nth-child(4) { transition-delay: .24s; }
+.reveal-stagger.visible > *:nth-child(5) { transition-delay: .32s; }
+.reveal-stagger.visible > *:nth-child(6) { transition-delay: .4s; }
+.reveal-stagger.visible > * { opacity: 1; transform: none; }
+
+/* Hero entrance */
+.hero-enter {
+  opacity: 0; transform: translateY(16px);
+  animation: heroIn .6s ease forwards;
+}
+.hero-enter:nth-child(1) { animation-delay: .1s; }
+.hero-enter:nth-child(2) { animation-delay: .2s; }
+.hero-enter:nth-child(3) { animation-delay: .35s; }
+.hero-enter:nth-child(4) { animation-delay: .5s; }
+.hero-enter:nth-child(5) { animation-delay: .65s; }
+
+@keyframes heroIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE — TABLET PRIMARY
+   ═══════════════════════════════════════════ */
+@media (max-width: 1024px) {
+  .lamp-section { min-height: auto; }
+  .lamp-3d { min-height: 55svh; }
+  .lamp-info { padding: 3rem 2.5rem; }
+  .about-left, .about-right { padding: 3rem 2.5rem; }
+  .contact-info, .contact-form-wrap { padding: 3rem 2.5rem; }
+}
+
+@media (max-width: 768px) {
+  :root { --header-h: 5.5rem; }
+
+  .header-top { padding: 1rem 1.2rem .6rem; }
+  .logo { font-size: 1.4rem; }
+  nav.tabs a { font-size: .55rem; padding: .5rem .25rem; }
+
+  #accueil { padding: calc(var(--header-h) + 2rem) 1.5rem 3rem; }
+  .hero-tagline { max-width: 320px; }
+
+  .section-rule { padding: 2.5rem 1.5rem 2rem; }
+  .collection-intro { padding: 0 1.5rem 2rem; }
+
+  .lamp-section { grid-template-columns: 1fr; }
+  .lamp-section:nth-child(odd) .lamp-3d { order: 0; }
+  .lamp-section:nth-child(even) .lamp-info,
+  .lamp-section:nth-child(odd)  .lamp-info {
+    border: none; border-top: 1px solid var(--border);
+  }
+  .lamp-3d { min-height: 50svh; }
+  .lamp-info { padding: 2.5rem 1.5rem; }
+  .lamp-desc { max-width: 100%; }
+
+  .about-content { grid-template-columns: 1fr; }
+  .about-left { border-right: none; border-bottom: 1px solid var(--border); }
+  .about-left, .about-right { padding: 2.5rem 1.5rem; }
+
+  .expo-list { padding: 0 1.5rem 3rem; }
+  .expo-item { grid-template-columns: 1fr; gap: .4rem; }
+
+  .contact-grid { grid-template-columns: 1fr; }
+  .contact-info { border-right: none; border-bottom: 1px solid var(--border); }
+  .contact-info, .contact-form-wrap { padding: 2.5rem 1.5rem; }
+
+  .footer-main {
+    grid-template-columns: 1fr;
+    text-align: center; gap: 2rem; padding: 2.5rem 1.5rem;
+  }
+  .footer-nav { align-items: center; }
+  .footer-contact { text-align: center; }
+  .footer-bottom {
+    flex-direction: column; gap: .5rem;
+    text-align: center; padding: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-logo { font-size: 2.4rem; }
+  .lamp-name { font-size: 1.4rem; }
+  .lamp-spec { gap: 1.2rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     HEADER
+     ═══════════════════════════════════════════ -->
+<header id="site-header">
+  <div class="header-top">
+    <a href="#accueil" class="logo" aria-label="Loumy Lab — accueil">
+      LOUMY LAB <span>Design Studio & Atelier</span>
+    </a>
+  </div>
+  <nav class="tabs" aria-label="Navigation principale">
+    <a href="#accueil" data-section="accueil">Accueil</a>
+    <a href="#collection" data-section="collection">Collection</a>
+    <a href="#apropos" data-section="apropos">À Propos</a>
+    <a href="#expositions" data-section="expositions">Expositions</a>
+    <a href="#contact" data-section="contact">Contact</a>
+  </nav>
+</header>
+
+<!-- ═══════════════════════════════════════════
+     ACCUEIL
+     ═══════════════════════════════════════════ -->
+<section id="accueil" aria-labelledby="hero-title">
+  <div class="hero-video" aria-hidden="true">
+    <video autoplay muted loop playsinline preload="auto">
+      <source src="media/hero.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="hero-content">
+    <h1 class="hero-logo hero-enter" id="hero-title">LOUMY LAB</h1>
+    <p class="hero-sub hero-enter">Design Studio & Atelier</p>
+    <p class="hero-tagline hero-enter">Luminaires artisanaux en bois massif. Chaque pièce est dessinée, façonnée à la main et numérotée.</p>
+    <div class="hero-scroll hero-enter" aria-hidden="true">
+      <span>Explorer</span>
+      <div class="hero-scroll-line"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     COLLECTION
+     ═══════════════════════════════════════════ -->
+<section id="collection" aria-label="Collection de luminaires">
+  <div class="section-rule reveal">
+    <h2>Collection</h2>
+    <div class="rule"></div>
+    <span class="rule-num"></span>
+  </div>
+
+  <div class="collection-intro reveal">
+    <p>L'objectif de la collection est de proposer des luminaires épurés et distingués que l'on remarque sans pour autant saturer l'espace. Fabriquées en atelier artisanal, les modèles sont réalisés en quantité très limitée. Chaque luminaire est marqué et numéroté, et constitue une pièce unique.</p>
+    <p>Les lampes sont travaillées à partir de frêne olivier issu de forêts de Moselle dont l'exploitation est durable. Comme une empreinte digitale, les veines marquées du frêne donne des motifs uniques pour chaque lampe.</p>
+  </div>
+
+  <!-- 01 TRIPTYQUE -->
+  <article class="lamp-section reveal" aria-labelledby="n0">
+    <div class="lamp-3d" aria-label="Vue 3D — TRIPTYQUE">
+      <canvas id="c0"></canvas>
+      <span class="lamp-3d-badge">3D · scroll</span>
+      <span class="lamp-3d-placeholder">Triptyque</span>
+    </div>
+    <div class="lamp-info">
+
+      <h2 class="lamp-name" id="n0">TRIPTYQUE</h2>
+      <p class="lamp-desc">Une composition en trois volumes qui joue avec les équilibres et la lumière diffusée. La forme s'inspire du découpage géométrique du bois brut.</p>
+      <dl class="lamp-spec">
+        <div><dt>Matière</dt><dd>Frêne Olivier</dd></div>
+        <div><dt>Finition</dt><dd>Huile naturelle</dd></div>
+      </dl>
+      <a href="#contact" class="lamp-cta">Demander un devis</a>
+    </div>
+  </article>
+
+  <!-- 02 LN1 -->
+  <article class="lamp-section reveal" aria-labelledby="n1">
+    <div class="lamp-info">
+
+      <h2 class="lamp-name" id="n1">LN1</h2>
+      <p class="lamp-desc">Lignes sobres et verticalité assumée. Le LN1 est une étude de la tension entre la masse et la légèreté, entre le plein et le vide.</p>
+      <dl class="lamp-spec">
+        <div><dt>Matière</dt><dd>Frêne Olivier</dd></div>
+        <div><dt>Finition</dt><dd>Cire naturelle</dd></div>
+      </dl>
+      <a href="#contact" class="lamp-cta">Demander un devis</a>
+    </div>
+    <div class="lamp-3d" aria-label="Vue 3D — LN1">
+      <canvas id="c1"></canvas>
+      <span class="lamp-3d-badge">3D · scroll</span>
+      <span class="lamp-3d-placeholder">LN1</span>
+    </div>
+  </article>
+
+  <!-- 03 D901 -->
+  <article class="lamp-section reveal" aria-labelledby="n2">
+    <div class="lamp-3d" aria-label="Vue 3D — D901">
+      <canvas id="c2"></canvas>
+      <span class="lamp-3d-badge">3D · scroll</span>
+      <span class="lamp-3d-placeholder">D901</span>
+    </div>
+    <div class="lamp-info">
+
+      <h2 class="lamp-name" id="n2">D901</h2>
+      <p class="lamp-desc">La référence D901 est une exploration des courbes douces dans un matériau naturellement anguleux. Un équilibre rare qui révèle tout le talent du menuisier.</p>
+      <dl class="lamp-spec">
+        <div><dt>Matière</dt><dd>Frêne Olivier</dd></div>
+        <div><dt>Finition</dt><dd>Brou de noix</dd></div>
+      </dl>
+      <a href="#contact" class="lamp-cta">Demander un devis</a>
+    </div>
+  </article>
+
+  <!-- 04 N2 -->
+  <article class="lamp-section reveal" aria-labelledby="n3">
+    <div class="lamp-info">
+
+      <h2 class="lamp-name" id="n3">N2</h2>
+      <p class="lamp-desc">Minimalisme exigeant. Le N2 réduit le luminaire à son essentiel, laissant le grain du frêne dicter sa propre décoration naturelle.</p>
+      <dl class="lamp-spec">
+        <div><dt>Matière</dt><dd>Frêne Olivier</dd></div>
+        <div><dt>Finition</dt><dd>Huile naturelle</dd></div>
+      </dl>
+      <a href="#contact" class="lamp-cta">Demander un devis</a>
+    </div>
+    <div class="lamp-3d" aria-label="Vue 3D — N2">
+      <canvas id="c3"></canvas>
+      <span class="lamp-3d-badge">3D · scroll</span>
+      <span class="lamp-3d-placeholder">N2</span>
+    </div>
+  </article>
+
+  <!-- 05 P1 -->
+  <article class="lamp-section reveal" aria-labelledby="n4">
+    <div class="lamp-3d" aria-label="Vue 3D — P1">
+      <canvas id="c4"></canvas>
+      <span class="lamp-3d-badge">3D · scroll</span>
+      <span class="lamp-3d-placeholder">P1</span>
+    </div>
+    <div class="lamp-info">
+
+      <h2 class="lamp-name" id="n4">P1</h2>
+      <p class="lamp-desc">Un jeu de plateaux superposés qui crée une profondeur visuelle inattendue. La lumière filtrée révèle les strates du bois comme autant de couches de temps.</p>
+      <dl class="lamp-spec">
+        <div><dt>Matière</dt><dd>Frêne Olivier</dd></div>
+        <div><dt>Finition</dt><dd>Cire naturelle</dd></div>
+      </dl>
+      <a href="#contact" class="lamp-cta">Demander un devis</a>
+    </div>
+  </article>
+
+  <!-- 06 E2 -->
+  <article class="lamp-section reveal" aria-labelledby="n5">
+    <div class="lamp-info">
+
+      <h2 class="lamp-name" id="n5">E2</h2>
+      <p class="lamp-desc">L'E2 explore la dualité entre l'opacité du bois et la transparence de la lumière. Une pièce d'une sobriété très japonaise dans sa conception.</p>
+      <dl class="lamp-spec">
+        <div><dt>Matière</dt><dd>Frêne Olivier</dd></div>
+        <div><dt>Finition</dt><dd>Huile de lin</dd></div>
+      </dl>
+      <a href="#contact" class="lamp-cta">Demander un devis</a>
+    </div>
+    <div class="lamp-3d" aria-label="Vue 3D — E2">
+      <canvas id="c5"></canvas>
+      <span class="lamp-3d-badge">3D · scroll</span>
+      <span class="lamp-3d-placeholder">E2</span>
+    </div>
+  </article>
+
+  <!-- 07 POLY -->
+  <article class="lamp-section reveal" aria-labelledby="n6">
+    <div class="lamp-3d" aria-label="Vue 3D — POLY">
+      <canvas id="c6"></canvas>
+      <span class="lamp-3d-badge">3D · scroll</span>
+      <span class="lamp-3d-placeholder">POLY</span>
+    </div>
+    <div class="lamp-info">
+
+      <h2 class="lamp-name" id="n6">POLY</h2>
+      <p class="lamp-desc">La forme la plus sculpturale de la collection. POLY est une constellation de facettes qui capte la lumière sous tous les angles, en perpétuelle transformation.</p>
+      <dl class="lamp-spec">
+        <div><dt>Matière</dt><dd>Frêne Olivier</dd></div>
+        <div><dt>Finition</dt><dd>Cire et huile</dd></div>
+      </dl>
+      <a href="#contact" class="lamp-cta">Demander un devis</a>
+    </div>
+  </article>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     À PROPOS
+     ═══════════════════════════════════════════ -->
+<section id="apropos" aria-label="À propos">
+  <div class="section-rule reveal">
+    <h2>À Propos</h2>
+    <div class="rule"></div>
+    <span class="rule-num">L'atelier</span>
+  </div>
+
+  <div class="about-content">
+    <div class="about-left reveal">
+      <p class="about-label">Philosophie</p>
+      <blockquote>Passionné par le design et le travail du bois, j'ai fondé Loumy Lab avec l'envie de créer des luminaires qui ne sont pas de simples objets fonctionnels, mais de véritables pièces sculpturales.</blockquote>
+    </div>
+    <div class="about-right reveal-stagger reveal">
+      <p>Loumy Lab puise son inspiration dans l'architecture et auprès des designers avant-gardistes des années 50-60, tels que Le Corbusier et Charlotte Perriand.</p>
+      <p>Chaque création est pensée, dessinée et façonnée à la main, avec du bois massif issu de forêts gérées durablement. Les imperfections du bois, une fois réunies, créent une harmonie unique.</p>
+      <p>Loin des productions standardisées, chaque luminaire est réalisé en petite série, numéroté et conçu pour traverser le temps.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     EXPOSITIONS
+     ═══════════════════════════════════════════ -->
+<section id="expositions" aria-label="Expositions">
+  <div class="section-rule reveal">
+    <h2>Expositions</h2>
+    <div class="rule"></div>
+    <span class="rule-num">2024 — 2025</span>
+  </div>
+
+  <div class="expo-list">
+    <article class="expo-item reveal">
+      <div class="expo-date">Sept. 2024</div>
+      <div class="expo-detail">
+        <h3>Paris Design Week 2024</h3>
+        <p>Bibliothèque Historique de la Ville de Paris<br>24 Rue Pavée, 75004 Paris</p>
+      </div>
+    </article>
+
+    <article class="expo-item reveal">
+      <div class="expo-date">2024</div>
+      <div class="expo-detail">
+        <h3>Bois Français &amp; Design</h3>
+        <p>Concours régional Grand Est</p>
+        <span class="expo-badge">Lauréat</span>
+      </div>
+    </article>
+
+    <article class="expo-item reveal">
+      <div class="expo-date">Sept. 24 — Fev. 25</div>
+      <div class="expo-detail">
+        <h3>Galerie Graf Notaire</h3>
+        <p>104 Av. des Champs-Élysées, 75008 Paris</p>
+      </div>
+    </article>
+
+    <article class="expo-item reveal">
+      <div class="expo-date">Déc. 2024</div>
+      <div class="expo-detail">
+        <h3>ARTPOINT — La Condition Publique</h3>
+        <p>14 Pl. du Général Faidherbe, 59100 Roubaix</p>
+      </div>
+    </article>
+
+    <article class="expo-item reveal">
+      <div class="expo-date">2025</div>
+      <div class="expo-detail">
+        <h3>Galerie IDEA DESIGN</h3>
+        <p>58 Rue Greneta, 75002 Paris</p>
+        <span class="expo-badge">Point de vente</span>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     CONTACT
+     ═══════════════════════════════════════════ -->
+<section id="contact" aria-label="Contact">
+  <div class="section-rule reveal">
+    <h2>Contact</h2>
+    <div class="rule"></div>
+  </div>
+
+  <div class="contact-grid">
+    <div class="contact-info reveal-stagger reveal">
+      <div class="info-block">
+        <p class="info-label">Atelier</p>
+        <p>7 avenue de Blida<br>57000 Metz</p>
+      </div>
+      <div class="info-block">
+        <p class="info-label">Téléphone</p>
+        <p><a href="tel:+33682280706">06 82 28 07 06</a></p>
+      </div>
+      <div class="info-block">
+        <p class="info-label">Email</p>
+        <p><a href="mailto:contact@loumylab.com">contact@loumylab.com</a></p>
+      </div>
+      <div class="info-block">
+        <a href="https://www.instagram.com/loumy_lab/" class="contact-insta" target="_blank" rel="noopener" aria-label="Instagram Loumy Lab">
+          @loumy_lab · Instagram
+        </a>
+      </div>
+    </div>
+
+    <div class="contact-form-wrap reveal">
+      <p class="form-label">Envoyer un message</p>
+      <form class="contact-form" onsubmit="return false;">
+        <div>
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" placeholder="votre@email.com" required>
+        </div>
+        <div>
+          <label for="message">Message</label>
+          <textarea id="message" name="message" rows="5" placeholder="Votre message..."></textarea>
+        </div>
+        <button type="submit">Envoyer</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     FOOTER
+     ═══════════════════════════════════════════ -->
+<footer>
+  <div class="footer-main">
+    <a href="#accueil" class="logo">LOUMY LAB <span>Design Studio & Atelier</span></a>
+
+    <nav class="footer-nav" aria-label="Pied de page">
+      <a href="#accueil">Accueil</a>
+      <a href="#collection">Collection</a>
+      <a href="#apropos">À Propos</a>
+      <a href="#expositions">Expositions</a>
+      <a href="#contact">Contact</a>
+    </nav>
+
+    <div class="footer-contact">
+      <p>7 avenue de Blida · 57000 Metz<br>
+        <a href="tel:+33682280706">06 82 28 07 06</a><br>
+        <a href="mailto:contact@loumylab.com">contact@loumylab.com</a></p>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <span>© 2025 Loumy Lab. Tous droits réservés.</span>
+    <span>Pièces artisanales · Frêne Olivier · Moselle</span>
+  </div>
+</footer>
+
+<!-- ═══════════════════════════════════════════
+     SCRIPTS
+     ═══════════════════════════════════════════ -->
+<script>
+'use strict';
+
+/* ── Scroll reveal ────────────────────────── */
+const revealIO = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) e.target.classList.add('visible');
+  });
+}, { threshold: .12 });
+
+document.querySelectorAll('.reveal').forEach(el => revealIO.observe(el));
+
+/* ── Active tab on scroll ─────────────────── */
+const sections = document.querySelectorAll('section[id]');
+const tabs = document.querySelectorAll('nav.tabs a');
+
+function updateActiveTab() {
+  const scrollY = window.scrollY + 140;
+  let current = '';
+  sections.forEach(s => {
+    if (s.offsetTop <= scrollY) current = s.id;
+  });
+  tabs.forEach(t => {
+    t.classList.toggle('active', t.dataset.section === current);
+  });
+}
+window.addEventListener('scroll', updateActiveTab, { passive: true });
+updateActiveTab();
+
+/* ── Header: transparent over hero, solid after ── */
+const header = document.getElementById('site-header');
+const heroSection = document.getElementById('accueil');
+function updateHeader() {
+  const heroBottom = heroSection.offsetTop + heroSection.offsetHeight;
+  header.classList.toggle('scrolled', window.scrollY + header.offsetHeight >= heroBottom - 80);
+}
+window.addEventListener('scroll', updateHeader, { passive: true });
+updateHeader();
+</script>
+
+</body>
+</html>
